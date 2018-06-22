@@ -2,8 +2,8 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-const users = require('./api/users');
-const books = require('./api/books');
+const users = require('./api/user');
+const books = require('./api/book');
 
 
 const app = express();
@@ -13,8 +13,8 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/users', users);
-app.use('/books', books);
+app.use('/user', users);
+app.use('/book', books);
 
 
 // catch 404 and forward to error handler
