@@ -39,9 +39,25 @@ router.get('/:id', isValidId, (req, res, next) => {
 
 router.put('/:id', isValidId, (req, res, next) => {
     let id = req.params.id;
-    queries.updateBook(id, req.body)
-        .then(Book => {
-            res.json(Book[0]);
+
+    const {userID, name} = req.body;
+
+    queries.getOneUser(userID)
+        .then(User => {
+            if (User) {
+                if (User.admin) {
+                    queries.updateBook(id, {name})
+                        .then(Book => {
+                            res.json(Book[0]);
+                        });
+                }
+                else {
+                    next(new Error('Unauthorised User'));
+                }
+            }
+            else {
+                next();
+            }
         });
 });
 
