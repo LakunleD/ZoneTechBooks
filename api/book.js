@@ -18,7 +18,11 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res, next) => {
-    queries.createBook(req.body)
+    const {name, rating} = req.body;
+    let totalScore = score;
+    let noOfUsers = 1;
+
+    queries.createBook({name, rating, totalScore, noOfUsers})
         .then(stickers => {
             res.json(stickers[0]);
         });
@@ -40,9 +44,9 @@ router.get('/:id', isValidId, (req, res, next) => {
 router.put('/:id', isValidId, (req, res, next) => {
     let id = req.params.id;
 
-    const {userID, name} = req.body;
+    const {UserId, name} = req.body;
 
-    queries.getOneUser(userID)
+    queries.getOneUser(UserId)
         .then(User => {
             if (User) {
                 if (User.admin) {
@@ -64,9 +68,9 @@ router.put('/:id', isValidId, (req, res, next) => {
 router.put('/rating/:id', isValidId, (req, res, next) => {
     let id = req.params.id;
 
-    const {userID, score} = req.body;
+    const {UserId, score} = req.body;
 
-    queries.getOneUser(userID)
+    queries.getOneUser(UserId)
         .then(User => {
             if (User) {
                 if (User.admin) {
